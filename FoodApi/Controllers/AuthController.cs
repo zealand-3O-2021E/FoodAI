@@ -8,10 +8,12 @@ using Library.Dtos;
 using Library;
 using FoodApi.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.Web.Http.Cors;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FoodApi.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*", SupportsCredentials = true)]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -34,7 +36,15 @@ namespace FoodApi.Controllers
                 Email = dto.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password)
             };
-            return Created("success", _repository.Create(user));
+            try
+            {
+                return Created("success", _repository.Create(user));
+
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { message = "This email address is already being used " });
+            }
         }
 
 
