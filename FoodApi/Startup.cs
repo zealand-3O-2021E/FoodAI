@@ -29,7 +29,18 @@ namespace FoodApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAccess_To_API", builder =>
+                {
+                    builder
+                        .SetIsOriginAllowed(origin => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
+
 
             services.AddDbContext<UserContext>(options =>
             {
@@ -41,6 +52,7 @@ namespace FoodApi
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<JwtService>();
 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FoodApi", Version = "v1" });
@@ -50,6 +62,8 @@ namespace FoodApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseCors("AllowAccess_To_API");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,13 +74,6 @@ namespace FoodApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseCors(options => options
-            .WithOrigins(new[] {  "http://localhost:8080"})
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-              );
 
             app.UseAuthorization();
 
