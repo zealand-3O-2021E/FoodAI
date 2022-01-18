@@ -29,17 +29,8 @@ namespace FoodApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAccess_To_API", builder =>
-                {
-                    builder
-                        .SetIsOriginAllowed(origin => true)
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
-                });
-            });
+
+            services.AddCors();
 
 
             services.AddDbContext<UserContext>(options =>
@@ -62,8 +53,14 @@ namespace FoodApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)// allow any origin
+                .AllowCredentials() // allow credentials
+                );
 
-            app.UseCors("AllowAccess_To_API");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

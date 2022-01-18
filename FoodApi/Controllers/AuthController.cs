@@ -62,10 +62,7 @@ namespace FoodApi.Controllers
 
             var jwt = _jwtService.Generate(user.Id);
 
-            Response.Cookies.Append("jwt", jwt, new CookieOptions
-            {
-                HttpOnly = true
-            });
+            Response.Cookies.Append("jwt", jwt, new CookieOptions());
 
             return Ok(new
             {
@@ -99,7 +96,7 @@ namespace FoodApi.Controllers
         public IActionResult Logout()
         {
             Response.Cookies.Delete("jwt");
-
+                
             return Ok(new
             {
                 message = "success"

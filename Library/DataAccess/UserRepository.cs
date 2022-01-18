@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.DataAccess
 {
@@ -28,12 +29,12 @@ namespace Library.DataAccess
         }
         public User GetByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
+            return _context.Users.Include(a => a.Histories).FirstOrDefault(u => u.Email == email);
         }
 
         public User GetById(int id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
+            return _context.Users.Include(a => a.Histories).FirstOrDefault(u => u.Id == id);
         }
     }
 }

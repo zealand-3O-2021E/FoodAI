@@ -13,8 +13,6 @@ namespace Library.DataAccess
             {
                 entity.HasIndex(e => e.Email).IsUnique();
             });
-
-         
         }
 
         public DbSet<History> Histories { get; set; }

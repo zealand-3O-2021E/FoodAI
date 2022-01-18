@@ -17,18 +17,19 @@ namespace FoodApi.Manager
             var client = new RestClient("https://api.logmeal.es/v2/recognition/complete");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
-            request.AddHeader("Authorization", "Bearer d966275a74bb1cc9667cff093852a34ba4f7a0df");
+            request.AddHeader("Authorization", "Bearer f028c1782bd0027941df4945cb4003f0ee05ae22");  
             request.AddFile("image", GetBytes(objFile), "test.jpeg");
             IRestResponse response = client.Execute(request);
             Results myDeserializedClass = JsonConvert.DeserializeObject<Results>(response.Content);
             return myDeserializedClass;
         }
+
         public History GetCal(int id)
         {
             var client = new RestClient("https://api.logmeal.es/v2/recipe/nutritionalInfo");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
-            request.AddHeader("Authorization", "Bearer d966275a74bb1cc9667cff093852a34ba4f7a0df");
+            request.AddHeader("Authorization", "Bearer f028c1782bd0027941df4945cb4003f0ee05ae22");
             request.RequestFormat = DataFormat.Json;
             request.AddJsonBody(new { imageId = id});
             IRestResponse response = client.Execute(request);
@@ -39,7 +40,7 @@ namespace FoodApi.Manager
         public Results GetOp(string name)
         {
             var client = new RestClient("https://api.spoonacular.com/recipes/complexSearch?" +
-                "apiKey=cbf773a39db14e4fa1899315ffc31b75");
+                "apiKey=9ef9cfb98ac34af3a343d005379963c0");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddParameter("query", name);
@@ -53,7 +54,7 @@ namespace FoodApi.Manager
             var client = new RestClient("https://api.spoonacular.com/recipes/" +
                 id +
                 "/information?" +
-                "apiKey=cbf773a39db14e4fa1899315ffc31b75" +
+                "apiKey=9ef9cfb98ac34af3a343d005379963c0" +
                 "&includeNutrition=true");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
